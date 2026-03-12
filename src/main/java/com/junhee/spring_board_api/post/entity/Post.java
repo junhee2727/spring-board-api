@@ -1,4 +1,4 @@
-package com.junhee.spring_board_api.domain.post;
+package com.junhee.spring_board_api.post.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
