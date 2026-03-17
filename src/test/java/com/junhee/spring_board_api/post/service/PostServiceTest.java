@@ -1,8 +1,8 @@
 package com.junhee.spring_board_api.post.service;
 
-import com.junhee.spring_board_api.post.dto.PostCreateRequest;
-import com.junhee.spring_board_api.post.dto.PostResponse;
-import com.junhee.spring_board_api.post.entity.Post;
+import com.junhee.spring_board_api.domain.post.dto.PostCreateRequest;
+import com.junhee.spring_board_api.domain.post.entity.Post;
+import com.junhee.spring_board_api.domain.post.service.PostService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

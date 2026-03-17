@@ -1,17 +1,15 @@
-package com.junhee.spring_board_api.post.controller;
+package com.junhee.spring_board_api.domain.post.controller;
 
-import com.junhee.spring_board_api.post.dto.PostCreateRequest;
-import com.junhee.spring_board_api.post.dto.PostResponse;
-import com.junhee.spring_board_api.post.dto.PostUpdateRequest;
-import com.junhee.spring_board_api.post.entity.Post;
-import com.junhee.spring_board_api.post.repository.PostRepository;
-import com.junhee.spring_board_api.post.service.PostService;
+import com.junhee.spring_board_api.domain.post.dto.PostCreateRequest;
+import com.junhee.spring_board_api.domain.post.dto.PostResponse;
+import com.junhee.spring_board_api.domain.post.dto.PostUpdateRequest;
+import com.junhee.spring_board_api.domain.post.entity.Post;
+import com.junhee.spring_board_api.domain.post.repository.PostRepository;
+import com.junhee.spring_board_api.domain.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 public class PostController {
@@ -30,7 +28,7 @@ public class PostController {
         return new PostResponse(post);
     }
 
-    //getPosts 기본 사이즈를 10으로 제한
+    //getPosts @PageableDefault(size=10) > 기본 사이즈를 10으로 제한
     @GetMapping("/posts")
     public Page<PostResponse> getPosts(@PageableDefault(size = 10) Pageable pageable) {
         return postService.getPosts(pageable)
@@ -40,6 +38,14 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public Post getPost(@PathVariable Long id){
         return postService.getPost(id);
+    }
+
+    //@PageableDefault(size=10) > 기본 사이즈를 10으로 제한
+    @GetMapping("/posts/search")
+    public Page<PostResponse> searchPosts(@RequestParam String title,
+                                          @PageableDefault(size = 10) Pageable pageable){
+        return postService.searchPosts(title, pageable)
+                .map(PostResponse::new);
     }
 
     @PutMapping("/posts/{id}")

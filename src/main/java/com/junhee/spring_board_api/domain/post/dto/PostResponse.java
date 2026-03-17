@@ -1,6 +1,6 @@
-package com.junhee.spring_board_api.post.dto;
+package com.junhee.spring_board_api.domain.post.dto;
 
-import com.junhee.spring_board_api.post.entity.Post;
+import com.junhee.spring_board_api.domain.post.entity.Post;
 import lombok.Getter;
 
 @Getter

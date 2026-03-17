@@ -1,5 +1,6 @@
-package com.junhee.spring_board_api.post.entity;
+package com.junhee.spring_board_api.domain.post.entity;
 
+import com.junhee.spring_board_api.domain.common.BaseEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class Post {
+public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
