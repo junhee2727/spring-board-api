@@ -10,7 +10,7 @@ public class PostResponse {
     private String content;
 
     public PostResponse(Post post) {
-        this.id = post.getId();
+        this.id = post.getPostId();
         this.title = post.getTitle();
         this.content = post.getContent();
     }

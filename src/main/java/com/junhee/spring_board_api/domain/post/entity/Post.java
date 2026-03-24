@@ -70,7 +70,8 @@ public class Post extends BaseEntity {
         this.content = content;
     }
 
-    public void update(String title, String content) {
+    public void update(Category category ,String title, String content) {
+        this.category = category;
         this.title = title;
         this.content = content;
     }
