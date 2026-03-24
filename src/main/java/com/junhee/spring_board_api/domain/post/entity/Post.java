@@ -1,6 +1,8 @@
 package com.junhee.spring_board_api.domain.post.entity;
 
+import com.junhee.spring_board_api.domain.category.entity.Category;
 import com.junhee.spring_board_api.domain.common.BaseEntity;
+import com.junhee.spring_board_api.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,7 +30,11 @@ import org.hibernate.validator.constraints.Length;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "post")
+@Table(name = "post", indexes = {
+        @Index(name = "idx_post_member", columnList = "member_id"),
+        @Index(name = "idx_post_category", columnList = "category_id"),
+        @Index(name = "idx_post_created", columnList = "created_at")
+})
 public class Post extends BaseEntity {
     public enum PostStatus {
         ACTIVE,
@@ -38,13 +44,13 @@ public class Post extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "member_id", nullable = false)
-//    private Member member;
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "category_id", nullable = false)
-//    private Category category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id", nullable = false)
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
     @Column(length = 255, nullable = false)
     private String title;
     @Lob
@@ -57,7 +63,9 @@ public class Post extends BaseEntity {
     private PostStatus status = PostStatus.ACTIVE;
 
 
-    public Post(String title, String content) {
+    public Post(Member member,Category category,String title, String content) {
+        this.member = member;
+        this.category = category;
         this.title = title;
         this.content = content;
     }
@@ -65,5 +73,13 @@ public class Post extends BaseEntity {
     public void update(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void increaseViewCount(){
+        this.viewCount++;
+    }
+
+    public void delete() {
+        this.status = PostStatus.DELETED;
     }
 }
