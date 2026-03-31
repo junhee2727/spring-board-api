@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PostController {
     private final PostService postService;
-    private final PostRepository postRepository;
 
     @PostMapping("/posts")
     public ApiResponse<PostResponse> createPost(@Valid @RequestBody PostCreateRequest request) {
@@ -29,9 +28,13 @@ public class PostController {
         return new ApiResponse<>(200, new PostResponse(post));
     }
 
-    //getPosts @PageableDefault(size=10) > 기본 사이즈를 10으로 제한
     @GetMapping("/posts")
-    public ApiResponse<Page<PostResponse>> getPosts(@PageableDefault(size = 10) Pageable pageable) {
+    public ApiResponse<Page<PostResponse>> getPosts(@RequestParam(required = false) Integer categoryId,
+                                                    @PageableDefault(size = 10) Pageable pageable) {
+        if (categoryId != null) {
+            return new ApiResponse<>(200, postService.getPostsByCategory(categoryId, pageable)
+                    .map(PostResponse::new));
+        }
         return new ApiResponse<>(200, postService.getPosts(pageable)
                 .map(PostResponse::new));
     }
@@ -42,7 +45,6 @@ public class PostController {
                 new PostResponse(postService.getPostAndIncreaseView(id)));
     }
 
-    //@PageableDefault(size=10) > 기본 사이즈를 10으로 제한
     @GetMapping("/posts/search")
     public ApiResponse<Page<PostResponse>> searchPosts(@RequestParam String title,
                                           @PageableDefault(size = 10) Pageable pageable){

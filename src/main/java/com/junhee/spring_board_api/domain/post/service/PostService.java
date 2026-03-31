@@ -42,6 +42,7 @@ public class PostService {
         return postRepository.save(post);
     }
 
+    @Transactional(readOnly = true)
     public Post getPost(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
@@ -74,11 +75,16 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<Post> getPosts(Pageable pageable) {
-        return postRepository.findAll(pageable);
+        return postRepository.findByStatus(Post.PostStatus.ACTIVE, pageable);
     }
 
     @Transactional(readOnly = true)
     public Page<Post> searchPosts(String title, Pageable pageable){
-        return postRepository.findByTitleContaining(title, pageable);
+        return postRepository.findByTitleContainingAndStatus(title, Post.PostStatus.ACTIVE, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Post> getPostsByCategory(int categoryId, Pageable pageable){
+        return postRepository.findByCategoryCategoryIdAndStatus(categoryId, Post.PostStatus.ACTIVE, pageable);
     }
 }
