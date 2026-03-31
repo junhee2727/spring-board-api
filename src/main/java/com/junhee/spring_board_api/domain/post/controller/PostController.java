@@ -9,18 +9,17 @@ import com.junhee.spring_board_api.domain.post.repository.PostRepository;
 import com.junhee.spring_board_api.domain.post.service.PostService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Null;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
+@RequiredArgsConstructor
 @RestController
 public class PostController {
     private final PostService postService;
-
-    public PostController(PostRepository postRepository, PostService postService) {
-        this.postService = postService;
-    }
+    private final PostRepository postRepository;
 
     @PostMapping("/posts")
     public ApiResponse<PostResponse> createPost(@Valid @RequestBody PostCreateRequest request) {

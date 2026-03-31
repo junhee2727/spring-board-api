@@ -25,4 +25,9 @@ public class Category extends BaseEntity {
     private String name;
     @Column(nullable = false)
     private int sortOrder = 0;
+
+    public Category(String name, int sortOrder) {
+        this.name = name;
+        this.sortOrder = sortOrder;
+    }
 }

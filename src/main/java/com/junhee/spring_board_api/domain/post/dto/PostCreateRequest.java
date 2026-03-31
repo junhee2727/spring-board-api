@@ -8,7 +8,14 @@ import lombok.Setter;
 @Getter
 public class PostCreateRequest {
     private Long memberId;
-    private Long categoryId;
+    private int categoryId;
+
+    public PostCreateRequest(Long memberId, int categoryId, String title, String content) {
+        this.memberId = memberId;
+        this.categoryId = categoryId;
+        this.title = title;
+        this.content = content;
+    }
 
     @NotBlank(message = "제목은 필수입니다.")
     @Size(max = 255, message = "제목은 255자 이하입니다.")

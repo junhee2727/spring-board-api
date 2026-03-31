@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostUpdateRequest {
-    private Long categoryId;
+    private int categoryId;
     @NotBlank(message = "제목은 필수입니다.")
     private String title;
     @NotBlank(message = "내용은 필수입니다.")
