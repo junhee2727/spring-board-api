@@ -28,4 +28,18 @@ public class GlobalExceptionHandler {
                 .badRequest()
                 .body(new ErrorResponse(400, message));
     }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleCategoryNotFound(CategoryNotFoundException e){
+        return ResponseEntity
+                .status(404)
+                .body(new ErrorResponse(404, e.getMessage()));
+    }
+
+    @ExceptionHandler(MemberNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleMemberNotFound(MemberNotFoundException e){
+        return ResponseEntity
+                .status(404)
+                .body(new ErrorResponse(404, e.getMessage()));
+    }
 }

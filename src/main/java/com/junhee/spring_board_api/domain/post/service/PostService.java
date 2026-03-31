@@ -9,6 +9,8 @@ import com.junhee.spring_board_api.domain.post.dto.PostCreateRequest;
 import com.junhee.spring_board_api.domain.post.dto.PostUpdateRequest;
 import com.junhee.spring_board_api.domain.post.entity.Post;
 import com.junhee.spring_board_api.domain.post.repository.PostRepository;
+import com.junhee.spring_board_api.global.exception.CategoryNotFoundException;
+import com.junhee.spring_board_api.global.exception.MemberNotFoundException;
 import com.junhee.spring_board_api.global.exception.PostNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,9 +28,9 @@ public class PostService {
     @Transactional
     public Post createPost(PostCreateRequest request) {
         Member member = memberRepository.findById(request.getMemberId())
-                .orElseThrow(() -> new IllegalArgumentException("회원이 없습니다."));
+                .orElseThrow(MemberNotFoundException::new);
         Category category = categoryRepository.findById(request.getCategoryId())
-                .orElseThrow(() -> new IllegalArgumentException("카테고리가 없습니다."));
+                .orElseThrow(CategoryNotFoundException::new);
 
         Post post = new Post(
                 member,
@@ -43,6 +45,14 @@ public class PostService {
     public Post getPost(Long id) {
         return postRepository.findById(id)
                 .orElseThrow(PostNotFoundException::new);
+    }
+
+    @Transactional
+    public Post getPostAndIncreaseView(Long id) {
+        Post post = postRepository.findById(id)
+                    .orElseThrow(PostNotFoundException::new);
+        post.increaseViewCount();
+        return post;
     }
 
     @Transactional
@@ -62,10 +72,12 @@ public class PostService {
         post.delete();
     }
 
+    @Transactional(readOnly = true)
     public Page<Post> getPosts(Pageable pageable) {
         return postRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
     public Page<Post> searchPosts(String title, Pageable pageable){
         return postRepository.findByTitleContaining(title, pageable);
     }

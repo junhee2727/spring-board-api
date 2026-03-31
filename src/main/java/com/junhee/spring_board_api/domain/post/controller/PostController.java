@@ -40,7 +40,7 @@ public class PostController {
     @GetMapping("/posts/{id}")
     public ApiResponse<PostResponse> getPost(@PathVariable Long id){
         return new ApiResponse<>(200,
-                new PostResponse(postService.getPost(id)));
+                new PostResponse(postService.getPostAndIncreaseView(id)));
     }
 
     //@PageableDefault(size=10) > 기본 사이즈를 10으로 제한
@@ -60,6 +60,7 @@ public class PostController {
 
     @DeleteMapping("/posts/{id}")
     public ApiResponse<Void> deletePost(@PathVariable Long id){
+        postService.deletePost(id);
         return new ApiResponse<>(200, null);
     }
 }
